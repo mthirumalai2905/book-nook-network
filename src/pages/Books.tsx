@@ -11,7 +11,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function Books() {
   const { books, loading, updateBook, deleteBook } = useBooks();
-  const [viewMode, setViewMode] = useState<"table" | "grid">("table");
+  const [viewMode, setViewMode] = useState<"table" | "grid">(() => {
+    return (localStorage.getItem("books-view-mode") as "table" | "grid") || "table";
+  });
+
+  const handleViewModeChange = (mode: "table" | "grid") => {
+    setViewMode(mode);
+    localStorage.setItem("books-view-mode", mode);
+  };
   const navigate = useNavigate();
 
   return (
@@ -25,13 +32,13 @@ export default function Books() {
           <div className="flex items-center gap-2">
             <div className="flex items-center border border-border rounded-md overflow-hidden">
               <button
-                onClick={() => setViewMode("table")}
+                onClick={() => handleViewModeChange("table")}
                 className={`p-2 transition-colors ${viewMode === "table" ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent/50"}`}
               >
                 <List className="h-4 w-4" />
               </button>
               <button
-                onClick={() => setViewMode("grid")}
+                onClick={() => handleViewModeChange("grid")}
                 className={`p-2 transition-colors ${viewMode === "grid" ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent/50"}`}
               >
                 <LayoutGrid className="h-4 w-4" />
