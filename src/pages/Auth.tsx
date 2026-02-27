@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { BookOpen } from "lucide-react";
+import shelfspaceLogo from "@/assets/shelfspace-logo.png";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -43,14 +43,22 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="w-full max-w-sm animate-fade-in">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 relative overflow-hidden">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "linear-gradient(hsl(var(--border)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+        }}
+      />
+      <div className="w-full max-w-sm animate-fade-in relative z-10">
         <div className="flex items-center justify-center gap-2 mb-8">
-          <BookOpen className="h-8 w-8 text-foreground" />
-          <h1 className="text-2xl font-semibold text-foreground">BookCircle</h1>
+          <img src={shelfspaceLogo} alt="Shelfspace" className="h-8 w-8 object-contain" />
+          <h1 className="text-2xl font-bold text-foreground">Shelfspace</h1>
         </div>
 
-        <div className="border border-border rounded-lg p-6 bg-card">
+        <div className="border-2 border-foreground p-6 bg-card shadow-[5px_5px_0px_hsl(var(--foreground))]">
           <h2 className="text-lg font-medium mb-1 text-foreground">
             {isSignUp ? "Create an account" : "Welcome back"}
           </h2>
