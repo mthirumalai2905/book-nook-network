@@ -1,7 +1,8 @@
-import { BookOpen, Users, MessageCircle, User, LogOut, Search } from "lucide-react";
+import { Users, MessageCircle, User, LogOut, Search, BookOpen } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import shelfspaceLogo from "@/assets/shelfspace-logo.png";
 
 const navItems = [
   { title: "My Books", url: "/books", icon: BookOpen },
@@ -24,8 +25,8 @@ export function AppSidebar() {
     <aside className="w-60 h-screen border-r border-border bg-sidebar flex flex-col flex-shrink-0">
       <div className="p-4 border-b border-border">
         <h1 className="text-base font-semibold text-foreground flex items-center gap-2">
-          <BookOpen className="h-5 w-5" />
-          BookCircle
+          <img src={shelfspaceLogo} alt="Shelfspace" className="h-6 w-6 object-contain" />
+          Shelfspace
         </h1>
       </div>
 
