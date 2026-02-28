@@ -53,13 +53,13 @@ export default function Auth() {
         }}
       />
       <div className="w-full max-w-sm animate-fade-in relative z-10">
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <img src={shelfspaceLogo} alt="Shelfspace" className="h-8 w-8 object-contain" />
-          <h1 className="text-2xl font-bold text-foreground">Shelfspace</h1>
+        <div className="flex flex-col items-center gap-3 mb-8">
+          <img src={shelfspaceLogo} alt="Shelfspace" className="h-16 w-16 object-contain" />
+          <h1 className="text-3xl font-black text-foreground">Shelfspace</h1>
         </div>
 
         <div className="border-2 border-foreground p-6 bg-card shadow-[5px_5px_0px_hsl(var(--foreground))]">
-          <h2 className="text-lg font-medium mb-1 text-foreground">
+          <h2 className="text-lg font-bold mb-1 text-foreground">
             {isSignUp ? "Create an account" : "Welcome back"}
           </h2>
           <p className="text-sm text-muted-foreground mb-6">
@@ -73,6 +73,7 @@ export default function Auth() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
+                className="border-2 border-foreground focus:shadow-[2px_2px_0px_hsl(var(--foreground))] transition-shadow"
               />
             )}
             <Input
@@ -81,6 +82,7 @@ export default function Auth() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="border-2 border-foreground focus:shadow-[2px_2px_0px_hsl(var(--foreground))] transition-shadow"
             />
             <Input
               type="password"
@@ -89,8 +91,13 @@ export default function Auth() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
+              className="border-2 border-foreground focus:shadow-[2px_2px_0px_hsl(var(--foreground))] transition-shadow"
             />
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full bg-foreground text-background font-bold border-2 border-foreground shadow-[3px_3px_0px_hsl(var(--primary))] hover:shadow-[1px_1px_0px_hsl(var(--primary))] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              disabled={loading}
+            >
               {loading ? "Loading..." : isSignUp ? "Sign up" : "Sign in"}
             </Button>
           </form>
@@ -99,7 +106,7 @@ export default function Auth() {
             <button
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm text-muted-foreground hover:text-foreground font-medium transition-colors"
             >
               {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
             </button>

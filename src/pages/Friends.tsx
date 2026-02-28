@@ -34,7 +34,6 @@ export default function Friends() {
 
     if (!friendships) return;
 
-    // Get all relevant user IDs
     const userIds = new Set<string>();
     friendships.forEach((f) => {
       userIds.add(f.requester_id === user.id ? f.addressee_id : f.requester_id);
@@ -107,11 +106,11 @@ export default function Friends() {
   return (
     <AppLayout>
       <div className="p-6 max-w-2xl">
-        <h1 className="text-xl font-semibold text-foreground mb-6">Friends</h1>
+        <h1 className="text-2xl font-black text-foreground mb-6">Friends</h1>
 
         {/* Search users */}
         <div className="mb-8">
-          <h2 className="text-sm font-medium text-foreground mb-2">Find people</h2>
+          <h2 className="text-sm font-bold text-foreground mb-2 uppercase tracking-wider">Find people</h2>
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -120,22 +119,34 @@ export default function Friends() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && searchUsers()}
-                className="pl-9"
+                className="pl-9 border-2 border-foreground focus:shadow-[2px_2px_0px_hsl(var(--foreground))] transition-shadow"
               />
             </div>
-            <Button size="sm" variant="outline" onClick={searchUsers}>Search</Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={searchUsers}
+              className="border-2 border-foreground font-bold shadow-[2px_2px_0px_hsl(var(--foreground))] hover:shadow-[0px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              Search
+            </Button>
           </div>
           {searchResults.length > 0 && (
-            <div className="mt-2 border border-border rounded-md divide-y divide-border">
+            <div className="mt-2 border-2 border-foreground divide-y-2 divide-foreground shadow-[3px_3px_0px_hsl(var(--foreground))]">
               {searchResults.map((p) => (
-                <div key={p.id} className="flex items-center justify-between px-4 py-2">
+                <div key={p.id} className="flex items-center justify-between px-4 py-3 bg-background">
                   <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
+                    <div className="h-8 w-8 border-2 border-foreground bg-accent flex items-center justify-center text-xs font-bold">
                       {p.username.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-sm text-foreground">{p.username}</span>
+                    <span className="text-sm font-medium text-foreground">{p.username}</span>
                   </div>
-                  <Button size="sm" variant="outline" onClick={() => sendRequest(p.user_id)}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => sendRequest(p.user_id)}
+                    className="border-2 border-foreground font-bold shadow-[2px_2px_0px_hsl(var(--foreground))] hover:shadow-[0px_0px_0px] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                  >
                     <UserPlus className="h-3.5 w-3.5 mr-1" /> Add
                   </Button>
                 </div>
@@ -147,21 +158,30 @@ export default function Friends() {
         {/* Pending received */}
         {pendingReceived.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-sm font-medium text-foreground mb-2">Pending Requests</h2>
-            <div className="border border-border rounded-md divide-y divide-border">
+            <h2 className="text-sm font-bold text-foreground mb-2 uppercase tracking-wider">Pending Requests</h2>
+            <div className="border-2 border-foreground divide-y-2 divide-foreground shadow-[3px_3px_0px_hsl(var(--foreground))]">
               {pendingReceived.map((f) => (
-                <div key={f.id} className="flex items-center justify-between px-4 py-2">
+                <div key={f.id} className="flex items-center justify-between px-4 py-3 bg-background">
                   <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
+                    <div className="h-8 w-8 border-2 border-foreground bg-accent flex items-center justify-center text-xs font-bold">
                       {f.profile?.username?.charAt(0).toUpperCase() || "?"}
                     </div>
-                    <span className="text-sm text-foreground">{f.profile?.username}</span>
+                    <span className="text-sm font-medium text-foreground">{f.profile?.username}</span>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="outline" onClick={() => respondRequest(f.id, true)}>
+                    <Button
+                      size="sm"
+                      onClick={() => respondRequest(f.id, true)}
+                      className="bg-foreground text-background border-2 border-foreground font-bold shadow-[2px_2px_0px_hsl(var(--primary))] hover:shadow-[0px_0px_0px] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                    >
                       <Check className="h-3.5 w-3.5" />
                     </Button>
-                    <Button size="sm" variant="outline" onClick={() => respondRequest(f.id, false)}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => respondRequest(f.id, false)}
+                      className="border-2 border-foreground font-bold shadow-[2px_2px_0px_hsl(var(--foreground))] hover:shadow-[0px_0px_0px] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                    >
                       <X className="h-3.5 w-3.5" />
                     </Button>
                   </div>
@@ -173,26 +193,31 @@ export default function Friends() {
 
         {/* Friends list */}
         <div>
-          <h2 className="text-sm font-medium text-foreground mb-2">
+          <h2 className="text-sm font-bold text-foreground mb-2 uppercase tracking-wider">
             Your Friends ({friends.length})
           </h2>
           {loading ? (
             <p className="text-sm text-muted-foreground">Loading...</p>
           ) : friends.length === 0 ? (
-            <div className="border border-dashed border-border rounded-lg p-8 text-center">
-              <p className="text-muted-foreground text-sm">No friends yet. Search for people above!</p>
+            <div className="border-2 border-dashed border-foreground p-8 text-center">
+              <p className="text-muted-foreground text-sm font-medium">No friends yet. Search for people above!</p>
             </div>
           ) : (
-            <div className="border border-border rounded-md divide-y divide-border">
+            <div className="border-2 border-foreground divide-y-2 divide-foreground shadow-[3px_3px_0px_hsl(var(--foreground))]">
               {friends.map((f) => (
-                <div key={f.id} className="flex items-center justify-between px-4 py-2">
+                <div key={f.id} className="flex items-center justify-between px-4 py-3 bg-background">
                   <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
+                    <div className="h-8 w-8 border-2 border-foreground bg-accent flex items-center justify-center text-xs font-bold">
                       {f.profile?.username?.charAt(0).toUpperCase() || "?"}
                     </div>
-                    <span className="text-sm text-foreground">{f.profile?.username}</span>
+                    <span className="text-sm font-medium text-foreground">{f.profile?.username}</span>
                   </div>
-                  <Button size="sm" variant="ghost" onClick={() => removeFriend(f.id)} className="text-muted-foreground hover:text-destructive">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => removeFriend(f.id)}
+                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                  >
                     <UserMinus className="h-3.5 w-3.5" />
                   </Button>
                 </div>

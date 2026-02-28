@@ -58,7 +58,6 @@ export default function Messages() {
       .order("created_at", { ascending: true });
     setMessages(data || []);
 
-    // Mark as read
     await supabase
       .from("messages")
       .update({ read: true })
@@ -71,7 +70,6 @@ export default function Messages() {
     fetchMessages();
   }, [selectedFriend, user]);
 
-  // Realtime subscription
   useEffect(() => {
     if (!user || !selectedFriend) return;
     const channel = supabase
@@ -116,26 +114,28 @@ export default function Messages() {
     <AppLayout>
       <div className="flex h-screen">
         {/* Friends sidebar */}
-        <div className="w-64 border-r border-border flex flex-col flex-shrink-0">
-          <div className="p-3 border-b border-border">
-            <h2 className="text-sm font-medium text-foreground">Messages</h2>
+        <div className="w-64 border-r-2 border-foreground flex flex-col flex-shrink-0 bg-background">
+          <div className="p-3 border-b-2 border-foreground">
+            <h2 className="text-sm font-black text-foreground uppercase tracking-wider">Messages</h2>
           </div>
           <div className="flex-1 overflow-auto">
             {friends.length === 0 ? (
-              <p className="text-xs text-muted-foreground p-3">Add friends to start chatting</p>
+              <p className="text-xs text-muted-foreground p-3 font-medium">Add friends to start chatting</p>
             ) : (
               friends.map((friend) => (
                 <button
                   key={friend.id}
                   onClick={() => setSelectedFriend(friend)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-left transition-colors ${
-                    selectedFriend?.id === friend.id ? "bg-accent" : "hover:bg-accent/50"
+                  className={`w-full flex items-center gap-2 px-3 py-3 text-left transition-all border-b-2 border-foreground/10 ${
+                    selectedFriend?.id === friend.id
+                      ? "bg-accent border-l-4 !border-l-foreground"
+                      : "hover:bg-accent/50"
                   }`}
                 >
-                  <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-xs font-medium flex-shrink-0">
+                  <div className="h-8 w-8 border-2 border-foreground bg-accent flex items-center justify-center text-xs font-bold flex-shrink-0">
                     {friend.username.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-sm text-foreground truncate">{friend.username}</span>
+                  <span className="text-sm font-medium text-foreground truncate">{friend.username}</span>
                 </button>
               ))
             )}
@@ -146,11 +146,11 @@ export default function Messages() {
         <div className="flex-1 flex flex-col">
           {selectedFriend ? (
             <>
-              <div className="p-3 border-b border-border flex items-center gap-2">
-                <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
+              <div className="p-3 border-b-2 border-foreground flex items-center gap-2 bg-background">
+                <div className="h-8 w-8 border-2 border-foreground bg-accent flex items-center justify-center text-xs font-bold">
                   {selectedFriend.username.charAt(0).toUpperCase()}
                 </div>
-                <span className="text-sm font-medium text-foreground">{selectedFriend.username}</span>
+                <span className="text-sm font-bold text-foreground">{selectedFriend.username}</span>
               </div>
 
               <div className="flex-1 overflow-auto p-4 space-y-2">
@@ -158,11 +158,13 @@ export default function Messages() {
                   const isMine = msg.sender_id === user?.id;
                   return (
                     <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
-                      <div className={`max-w-[70%] px-3 py-2 rounded-lg text-sm ${
-                        isMine ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
+                      <div className={`max-w-[70%] px-3 py-2 text-sm border-2 border-foreground ${
+                        isMine
+                          ? "bg-foreground text-background shadow-[2px_2px_0px_hsl(var(--primary))]"
+                          : "bg-background text-foreground shadow-[2px_2px_0px_hsl(var(--foreground))]"
                       }`}>
                         <p>{msg.message}</p>
-                        <p className={`text-[10px] mt-1 ${isMine ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
+                        <p className={`text-[10px] mt-1 ${isMine ? "text-background/60" : "text-muted-foreground"}`}>
                           {format(new Date(msg.created_at), "h:mm a")}
                         </p>
                       </div>
@@ -172,20 +174,26 @@ export default function Messages() {
                 <div ref={messagesEndRef} />
               </div>
 
-              <div className="p-3 border-t border-border flex gap-2">
+              <div className="p-3 border-t-2 border-foreground flex gap-2 bg-background">
                 <Input
                   placeholder="Type a message..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                  className="border-2 border-foreground focus:shadow-[2px_2px_0px_hsl(var(--foreground))] transition-shadow"
                 />
-                <Button size="sm" onClick={sendMessage} disabled={sending || !newMessage.trim()}>
+                <Button
+                  size="sm"
+                  onClick={sendMessage}
+                  disabled={sending || !newMessage.trim()}
+                  className="bg-foreground text-background border-2 border-foreground shadow-[2px_2px_0px_hsl(var(--primary))] hover:shadow-[0px_0px_0px] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                >
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
             </>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
+            <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm font-medium">
               Select a friend to start chatting
             </div>
           )}
