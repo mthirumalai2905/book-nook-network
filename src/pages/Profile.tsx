@@ -48,40 +48,55 @@ export default function Profile() {
   return (
     <AppLayout>
       <div className="p-6 max-w-lg">
-        <h1 className="text-xl font-semibold text-foreground mb-6">Profile</h1>
+        <h1 className="text-2xl font-black text-foreground mb-6">Profile</h1>
 
-        <div className="border border-border rounded-lg p-6 space-y-6">
+        <div className="border-2 border-foreground p-6 shadow-[5px_5px_0px_hsl(var(--foreground))] bg-background space-y-6">
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center text-2xl font-semibold text-foreground">
+            <div className="h-16 w-16 border-2 border-foreground bg-accent flex items-center justify-center text-2xl font-black text-foreground">
               {profile?.username?.charAt(0).toUpperCase() || "?"}
             </div>
             <div>
-              <p className="font-medium text-foreground">{profile?.username}</p>
+              <p className="font-bold text-foreground text-lg">{profile?.username}</p>
               <p className="text-sm text-muted-foreground">{profile?.email}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="notion-card text-center">
-              <p className="text-2xl font-semibold text-foreground">{bookCount}</p>
-              <p className="text-xs text-muted-foreground">Books</p>
+            <div className="border-2 border-foreground p-4 text-center shadow-[3px_3px_0px_hsl(var(--foreground))] bg-accent">
+              <p className="text-3xl font-black text-foreground">{bookCount}</p>
+              <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Books</p>
             </div>
-            <div className="notion-card text-center">
-              <p className="text-2xl font-semibold text-foreground">{friendCount}</p>
-              <p className="text-xs text-muted-foreground">Friends</p>
+            <div className="border-2 border-foreground p-4 text-center shadow-[3px_3px_0px_hsl(var(--foreground))] bg-accent">
+              <p className="text-3xl font-black text-foreground">{friendCount}</p>
+              <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Friends</p>
             </div>
           </div>
 
           <div className="space-y-3">
             <div>
-              <label className="text-sm font-medium text-foreground mb-1 block">Username</label>
-              <Input value={username} onChange={(e) => setUsername(e.target.value)} />
+              <label className="text-sm font-bold text-foreground mb-1 block uppercase tracking-wider">Username</label>
+              <Input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="border-2 border-foreground focus:shadow-[2px_2px_0px_hsl(var(--foreground))] transition-shadow"
+              />
             </div>
             <div>
-              <label className="text-sm font-medium text-foreground mb-1 block">Bio</label>
-              <Textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={3} placeholder="Tell others about yourself..." />
+              <label className="text-sm font-bold text-foreground mb-1 block uppercase tracking-wider">Bio</label>
+              <Textarea
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                rows={3}
+                placeholder="Tell others about yourself..."
+                className="border-2 border-foreground focus:shadow-[2px_2px_0px_hsl(var(--foreground))] transition-shadow"
+              />
             </div>
-            <Button onClick={handleSave} disabled={saving} size="sm">
+            <Button
+              onClick={handleSave}
+              disabled={saving}
+              size="sm"
+              className="bg-foreground text-background font-bold border-2 border-foreground shadow-[3px_3px_0px_hsl(var(--primary))] hover:shadow-[1px_1px_0px_hsl(var(--primary))] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
               {saving ? "Saving..." : "Save changes"}
             </Button>
           </div>
